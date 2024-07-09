@@ -12,6 +12,22 @@ void append_message_size(std::vector<uint8_t> &machine_code, const std::string &
     machine_code[27] = (message_size & 0xFF000000) >> 24;
 }
 
+void show_machine_code(const std::vector<uint8_t> &machine_code) {
+    int konto = 0;
+    std::cout << "\nMachine Code Generated:\n";
+    std::cout << std::hex;
+    for (auto e : machine_code) {
+        std::cout << (int)e << " ";
+        konto++;
+        if (konto % 7 == 0) {
+            std::cout << '\n';
+        }
+    }
+
+    std::cout << std::dec;
+    std::cout << "\n\n";
+}
+
 int main() {
     std::string name;
     std::cout << "What is your name?\n";
@@ -36,4 +52,6 @@ int main() {
     for (auto c : hello_name) {
         machine_code.push_back(c);
     }
+
+    show_machine_code(machine_code);
 }
