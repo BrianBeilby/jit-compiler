@@ -69,3 +69,23 @@ struct MemoryPages {
     }
 };
 
+namespace AssemblyChunks {
+    std::vector<uint8_t>function_prologue {
+        0x55,               // push rbp
+        0x48, 0x89, 0xe5,   // mov	rbp, rsp
+    };
+ 
+    std::vector<uint8_t>function_epilogue {
+        0x5d,   // pop	rbp
+        0xc3    // ret
+    };
+}
+
+std::vector<int> a{1, 2, 3};
+
+void test() {
+    printf("Ohhh, boy ...\n");
+    for (auto &e : a) {
+        e -= 5;
+    }
+}
