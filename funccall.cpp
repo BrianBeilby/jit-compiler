@@ -40,5 +40,19 @@ struct MemoryPages {
         std::memcpy((mem + position), &fn_address, sizeof fn_address);
         position += sizeof fn_address;
     }
+
+    // Push a vector of uint8_t numbers to the memory
+    void push(const std::vector<uint8_t> &data) {
+        check_available_space(data.size());
+
+        std::memcpy((mem + position), &data[0], data.size());
+        position += data.size();
+    }
+
+    void check_available_space(size_t data_size) {
+        if (position + data_size > pages * page_size) {
+            throw std::runtime_error("Not enough virtual memory allocated!");
+        }
+    }
 };
 
