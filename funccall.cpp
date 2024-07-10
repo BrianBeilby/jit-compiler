@@ -54,5 +54,18 @@ struct MemoryPages {
             throw std::runtime_error("Not enough virtual memory allocated!");
         }
     }
+
+    void show_memory() {
+        std::cout << "\nMemory Content: " << position << "/" << pages * page_size << " bytes used\n";
+        std::cout << std::hex;
+        for (size_t i = 0; i < position; ++i) {
+            std::cout << "0x" << (int) mem[i] << " ";
+            if (i % 16 == 0 && i > 0) {
+                std::cout << '\n';
+            }
+        }
+        std::cout << std::dec;
+        std::cout << "\n\n";
+    }
 };
 
