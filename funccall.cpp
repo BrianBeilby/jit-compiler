@@ -89,3 +89,29 @@ void test() {
         e -= 5;
     }
 }
+
+int main() {
+    // Instance of exec mem structure
+    MemoryPages mp;
+
+    // Push prologue
+    mp.push(AssemblyChunks::function_prologue);
+
+    // Push the call to the C++ function test
+    mp.push(0x48); mp.push(0xb8); mp.push(test);    // movabs rax, <function_address>
+    mp.push(0xff); mp.push(0xd0);                   // call rax
+
+    // Push epilogue and print the generated code
+    mp.push(AssemblyChunks::function_epilogue);
+    mp.show_memory();
+
+    std::cout << "Global data initial values:\n";
+    std::cout << a[0] << "\t" << a[1] << "\t" << a[2] << "\n";
+
+    // Cast the address of our generated code to a function pointer and call the function
+    void (*func)() = reinterpret_cast<void (*)()>(mp.mem);
+    func();
+
+    std::cout << "Global data after test() was called from the generated code:\n";
+    std::cout << a[0] << "\t" << a[1] << "\t" << a[2] << "\n";
+}
