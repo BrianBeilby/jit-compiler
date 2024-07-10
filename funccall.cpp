@@ -25,10 +25,20 @@ struct MemoryPages {
         munmap(mem, pages * page_size);
     }
 
+    // Push a uint8_t number to the memory
     void push(uint8_t data) {
         check_available_space(sizeof data);
         mem[position] = data;
         position++;
+    }
+
+    // Push a function pointer to the memory
+    void push(void (*fn)()) {
+        size_t fn_address = reinterpret_cast<size_t>(fn);
+        check_available_space(sizeof fn_address);
+
+        std::memcpy((mem + position), &fn_address, sizeof fn_address);
+        position += sizeof fn_address;
     }
 };
 
